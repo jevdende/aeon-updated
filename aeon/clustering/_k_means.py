@@ -388,6 +388,11 @@ class TimeSeriesKMeans(BaseClusterer):
         """
         new_centres = np.zeros((self.n_clusters, X.shape[1], X.shape[2]))
         selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
+
+	# If there is an empty cluster in the initialisation, re-run the initialisation.
+        while np.unique(selected).shape[0] < self.n_clusters:
+            selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
+        
         for i in range(self.n_clusters):
             curr_indexes = np.where(selected == i)[0]
             result = mean_average(X[curr_indexes])
