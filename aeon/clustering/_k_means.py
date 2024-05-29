@@ -295,6 +295,12 @@ class TimeSeriesKMeans(BaseClusterer):
                 self._init_algorithm = self._kmeans_plus_plus_center_initializer
             elif self.init_algorithm == "first":
                 self._init_algorithm = self._first_center_initializer
+			else:
+                raise ValueError(
+                    f"The value provided for init_algorithm: {self.init_algorithm} is "
+                    f"invalid. The following are a list of valid init algorithms "
+                    f"strings: random, kmedoids++, first."
+                )
         else:
             if (
                 isinstance(self.init_algorithm, np.ndarray)
