@@ -303,7 +303,7 @@ class TimeSeriesKMeans(BaseClusterer):
                 raise ValueError(
                     f"The value provided for init_algorithm: {self.init_algorithm} is "
                     f"invalid. The following are a list of valid init algorithms "
-                    f"strings: random, kmedoids++, first, forgy."
+                    f"strings: random, kmeans++, first, forgy."
                 )
         else:
             if (
@@ -315,7 +315,7 @@ class TimeSeriesKMeans(BaseClusterer):
                 raise ValueError(
                     f"The value provided for init_algorithm: {self.init_algorithm} is "
                     f"invalid. The following are a list of valid init algorithms "
-                    f"strings: random, kmedoids++, first, forgy. You can also pass a"
+                    f"strings: random, kmeans++, first, forgy. You can also pass a"
                     f"np.ndarray of size (n_clusters, n_channels, n_timepoints)"
                 )
 
