@@ -367,34 +367,34 @@ class TimeSeriesKMeans(BaseClusterer):
         centers = X[indexes]
         return centers
 
-        def _forgy_center_initializer(self, X: np.ndarray) -> np.ndarray:
-            """Compute initial centroids using forgy's method.
+    def _forgy_center_initializer(self, X: np.ndarray) -> np.ndarray:
+        """Compute initial centroids using forgy's method.
         
-            This works by assigning each point randomly to a cluster. Then the average of
-            the cluster is taken to get the centers.
+        This works by assigning each point randomly to a cluster. Then the average of
+        the cluster is taken to get the centers.
         
-            Parameters
-            ----------
-            X : np.ndarray (3d array of shape (n_instances,n_dimensions,series_length))
-                Time series instances to cluster.
-            n_clusters: int, default=8
-                The number of clusters to form as well as the number of
+        Parameters
+        ----------
+        X : np.ndarray (3d array of shape (n_instances,n_dimensions,series_length))
+            Time series instances to cluster.
+        n_clusters: int, default=8
+            The number of clusters to form as well as the number of
                 centroids to generate.
         
-            Returns
-            -------
-            np.ndarray (3d array of shape (n_clusters, n_dimensions, series_length))
-                Indexes of the cluster centers.
-            """
-            new_centres = np.zeros((self.n_clusters, X.shape[1], X.shape[2]))
-            selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
-            for i in range(self.n_clusters):
-                curr_indexes = np.where(selected == i)[0]
-                result = mean_average(X[curr_indexes])
-                if result.shape[0] > 0:
-                    new_centres[i, :] = result
+        Returns
+        -------
+        np.ndarray (3d array of shape (n_clusters, n_dimensions, series_length))
+            Indexes of the cluster centers.
+        """
+        new_centres = np.zeros((self.n_clusters, X.shape[1], X.shape[2]))
+        selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
+        for i in range(self.n_clusters):
+            curr_indexes = np.where(selected == i)[0]
+            result = mean_average(X[curr_indexes])
+            if result.shape[0] > 0:
+                new_centres[i, :] = result
         
-            return new_centres
+        return new_centres
 
     def _handle_empty_cluster(
         self,
