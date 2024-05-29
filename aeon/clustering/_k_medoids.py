@@ -522,7 +522,7 @@ class TimeSeriesKMedoids(BaseClusterer):
         """
         selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
         
-        return _compute_new_cluster_centers(X, selected)
+        return self._compute_new_cluster_centers(X, selected)
 
     def _pam_build_center_initializer(
         self,
