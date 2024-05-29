@@ -297,7 +297,7 @@ class TimeSeriesKMeans(BaseClusterer):
                 self._init_algorithm = self._kmeans_plus_plus_center_initializer
             elif self.init_algorithm == "first":
                 self._init_algorithm = self._first_center_initializer
-	    elif self.init_algorithm == "forgy":
+            elif self.init_algorithm == "forgy":
                 self._init_algorithm = self._forgy_center_initializer
 	    else:
                 raise ValueError(
