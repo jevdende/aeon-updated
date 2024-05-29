@@ -48,6 +48,8 @@ class TimeSeriesKMeans(BaseClusterer):
         from one another.
         First is the fastest method and simply chooses the first k time series as
         centroids.
+	Forgy assigns all time series to a cluster randomly, and takes the centroids
+ 	of those clusters as initial centroids.
         If a np.ndarray provided it must be of shape (n_clusters, n_channels,
         n_timepoints)
         and contains the time series to use as centroids.
@@ -295,11 +297,13 @@ class TimeSeriesKMeans(BaseClusterer):
                 self._init_algorithm = self._kmeans_plus_plus_center_initializer
             elif self.init_algorithm == "first":
                 self._init_algorithm = self._first_center_initializer
-			else:
+	    elif self.init_algorithm == "forgy":
+                self._init_algorithm = self._forgy_center_initializer
+	    else:
                 raise ValueError(
                     f"The value provided for init_algorithm: {self.init_algorithm} is "
                     f"invalid. The following are a list of valid init algorithms "
-                    f"strings: random, kmedoids++, first."
+                    f"strings: random, kmedoids++, first, forgy."
                 )
         else:
             if (
@@ -311,7 +315,7 @@ class TimeSeriesKMeans(BaseClusterer):
                 raise ValueError(
                     f"The value provided for init_algorithm: {self.init_algorithm} is "
                     f"invalid. The following are a list of valid init algorithms "
-                    f"strings: random, kmedoids++, first. You can also pass a"
+                    f"strings: random, kmedoids++, first, forgy. You can also pass a"
                     f"np.ndarray of size (n_clusters, n_channels, n_timepoints)"
                 )
 
