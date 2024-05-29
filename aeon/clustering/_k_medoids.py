@@ -495,8 +495,7 @@ class TimeSeriesKMedoids(BaseClusterer):
             next_center_idx = self._random_state.choice(X.shape[0], p=probabilities)
             indexes.append(next_center_idx)
 
-        centers = X[indexes]
-        return centers
+        return indexes
 
     def _pam_build_center_initializer(
         self,
