@@ -299,7 +299,7 @@ class TimeSeriesKMeans(BaseClusterer):
                 self._init_algorithm = self._first_center_initializer
             elif self.init_algorithm == "forgy":
                 self._init_algorithm = self._forgy_center_initializer
-	    else:
+            else:
                 raise ValueError(
                     f"The value provided for init_algorithm: {self.init_algorithm} is "
                     f"invalid. The following are a list of valid init algorithms "
