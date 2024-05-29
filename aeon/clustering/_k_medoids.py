@@ -436,19 +436,18 @@ class TimeSeriesKMedoids(BaseClusterer):
                 self._init_algorithm = self._first_center_initializer
             elif self.init_algorithm == "build":
                 self._init_algorithm = self._pam_build_center_initializer
-        else:
-            if (
+        elif (
                 isinstance(self.init_algorithm, np.ndarray)
                 and len(self.init_algorithm) == self.n_clusters
             ):
                 self._init_algorithm = self.init_algorithm
-            else:
-                raise ValueError(
-                    f"The value provided for init_algorithm: {self.init_algorithm} is "
-                    f"invalid. The following are a list of valid init algorithms "
-                    f"strings: random, kmedoids++, first. You can also pass a"
-                    f"np.ndarray of size (n_clusters, n_channels, n_timepoints)"
-                )
+        else:
+            raise ValueError(
+                f"The value provided for init_algorithm: {self.init_algorithm} is "
+                f"invalid. The following are a list of valid init algorithms "
+                f"strings: random, kmedoids++, first. You can also pass a"
+                f"np.ndarray of size (n_clusters, n_channels, n_timepoints)"
+            )
 
         if self.distance_params is not None:
             self._distance_params = self.distance_params
