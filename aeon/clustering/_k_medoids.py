@@ -434,13 +434,15 @@ class TimeSeriesKMedoids(BaseClusterer):
                 self._init_algorithm = self._kmedoids_plus_plus_center_initializer
             elif self.init_algorithm == "first":
                 self._init_algorithm = self._first_center_initializer
+            elif self.init_algorithm == "forgy":
+                self._init_algorithm = self._forgy_center_initializer
             elif self.init_algorithm == "build":
                 self._init_algorithm = self._pam_build_center_initializer
             else:
                 raise ValueError(
                     f"The value provided for init_algorithm: {self.init_algorithm} is "
                     f"invalid. The following are a list of valid init algorithms "
-                    f"strings: random, kmedoids++, first."
+                    f"strings: random, kmedoids++, first, forgy."
                 )
         elif isinstance(self.init_algorithm, np.ndarray) and len(self.init_algorithm) == self.n_clusters:
             self._init_algorithm = self.init_algorithm
@@ -448,7 +450,7 @@ class TimeSeriesKMedoids(BaseClusterer):
             raise ValueError(
                 f"The value provided for init_algorithm: {self.init_algorithm} is "
                 f"invalid. The following are a list of valid init algorithms "
-                f"strings: random, kmedoids++, first. You can also pass a"
+                f"strings: random, kmedoids++, first, forgy. You can also pass a"
                 f"np.ndarray of size (n_clusters, n_channels, n_timepoints)"
             )
 
@@ -518,15 +520,9 @@ class TimeSeriesKMedoids(BaseClusterer):
         np.ndarray (3d array of shape (n_clusters, n_dimensions, series_length))
             Indexes of the cluster centers.
         """
-        new_centres = np.zeros((self.n_clusters, X.shape[1], X.shape[2]))
         selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
-        for i in range(self.n_clusters):
-            curr_indexes = np.where(selected == i)[0]
-            result = mean_average(X[curr_indexes])
-            if result.shape[0] > 0:
-                new_centres[i, :] = result
         
-        return new_centres
+        return _compute_new_cluster_centers(X, selected)
 
     def _pam_build_center_initializer(
         self,
