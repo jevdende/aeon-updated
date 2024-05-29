@@ -521,6 +521,10 @@ class TimeSeriesKMedoids(BaseClusterer):
             Indexes of the cluster centers.
         """
         selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
+
+        # If there is an empty cluster in the initialisation, re-run the initialisation.
+        while np.unique(selected).shape[0] < self.n_clusters:
+            selected = self._random_state.choice(self.n_clusters, X.shape[0], replace=True)
         
         return self._compute_new_cluster_centers(X, selected)
 
