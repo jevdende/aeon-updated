@@ -422,7 +422,12 @@ class TimeSeriesKMedoids(BaseClusterer):
     ) -> Tuple[np.ndarray, float]:
         X_indexes = np.arange(X.shape[0], dtype=int)
         pairwise_matrix = self._compute_pairwise(X, X_indexes, cluster_center_indexes)
-        return pairwise_matrix.argmin(axis=1), pairwise_matrix.min(axis=1).sum()
+        new_indexes = pairwise_matrix.argmin(axis=1)
+        # If cluster points have the same distances, we can get empty clusters so always assign medoids to cluster:
+        if(len(np.unique(new_indexes)) < self.n_clusters):
+            new_indexes[cluster_center_indexes] = list(range(self.n_clusters))
+
+        return new_indexes, pairwise_matrix.min(axis=1).sum()
 
     def _check_params(self, X: np.ndarray) -> None:
         self._random_state = check_random_state(self.random_state)
